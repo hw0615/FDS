@@ -487,7 +487,7 @@ for ( var member in classUsingObject ) {
   if ( classUsingObject.hasOwnProperty(member) ) {
     var value = classUsingObject[member];
     console.log('member:', member);
-    // console.log('value:', value);
+    console.log('value:', value);
   }
 }
 
