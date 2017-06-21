@@ -48,7 +48,7 @@
         // $.before(wrapper_p, target);
       };
     }
-    methodTwo();
+    // methodTwo();
 
     // ------------------------------------------------------------
     // prependChild() 데모
@@ -62,7 +62,7 @@
       // 특정 시간이 지난 후에 ....
       global.setTimeout(prependAction, 2000);
     }
-    prependDemo();
+    // prependDemo();
     // ------------------------------------------------------------
     // insertAfter() 데모
     function insertAfterDemo() {
@@ -73,25 +73,73 @@
       console.log('result:', result);
       console.log('result.textContent:', result.textContent);
     }
-    insertAfterDemo();
+    // insertAfterDemo();
 
+    // ------------------------------------------------------------
+    // removeChild() 데모
     function removeChildDemo() {
-      global.setTimeout(afterTimeRemove, 2200);
-    }
-    removeChildDemo();
-    function afterTimeRemove() {
-      var removed_el = $.selector('.target');
-      removed_el = $.removeChild(removed_el);
-      // global.setTimeout(function(){
-      //   afterTimeAndAttach(removed_child);
-      // }, 3000);
 
-      global.setTimeout(afterTimeAndAttach.bind(removed_el), 3000);
+      global.setTimeout(afterTimeRemove, 2000);
+
+      function afterTimeRemove() {
+        var removed_el = $.selector('.target');
+        global.setTimeout(afterTimeAndAttach.bind($.removeChild(removed_el)), 1000);
+      }
+
+      function afterTimeAndAttach() {
+        $.insertAfter(this, $.selector('.prepend-demo :first-child'));
+      }
+
     }
-    function afterTimeAndAttach() {
-      // console.log(this); // removed_child
-      $.insertAfter(this, $.selector('.prepend-demo :first-child'));
+    // removeChildDemo();
+
+    // ------------------------------------------------------------
+    // innerHTML 데모
+    function innerHTMLDemo(data) {
+      var list_contents = data;
+      var mount         = $.selector('.mount');
+      var list_html     = '<ul class="list">';
+      for ( var content, i=0, l=list_contents.length; i<l; ++i ) {
+        content = list_contents[i];
+        list_html += '<li tabindex="0" onclick="choiceContent(this)" class="list-item">' + content + '</li>';
+      }
+      list_html += '</ul>';
+      mount.innerHTML = list_html;
     }
+
+    global.choiceContent = function(target) {
+      $.radioClass(target, 'active');
+    };
+
+    function bindEvents() {
+      var wrapper = $.selector('.input-field-wrapper');
+      var button = $.selector('button', wrapper);
+      button.onclick = replaceListItem.bind(button, wrapper);
+    }
+
+    function replaceListItem(wrapper) {
+      var input        = $.selector('input', wrapper);
+      var user_input   = input.value.trim();
+      var activated    = $.selector('.list .active');
+      var replace_node = $.createEl('li', user_input);
+      replace_node.setAttribute('tabindex', 0);
+      replace_node.setAttribute('onclick', 'choiceContent(this)');
+      replace_node.setAttribute('class', 'list-item');
+      if(user_input === '') {
+        user_input = global.prompt('대체할 콘텐츠를 입력하시겠습니까?');
+      }
+      activated = activated || $.addClass($.first($.selector('.list')), 'active');
+      $.replaceChild(replace_node, activated);
+      input.value = '';
+    }
+
+    // replaceChild() 데모
+    function replaceChildDemo() {
+      var data = '슈렉프라푸치노 아메리카노 카페라떼 차이티라떼 모카카푸치노'.split(' ');
+      innerHTMLDemo(data);
+      bindEvents();
+    }
+    replaceChildDemo();
 
 
 })(window, window.document, window.FDS);
