@@ -5,37 +5,22 @@ html(lang="ko-KR")
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible" content="ie=edge")
-    title 필터링/정렬 테이블 데이터(with 원피스) - Vue.js 프레임워크
+    title 감시자(watch) - Vue.js 프레임워크
 
     link(rel="shortcut icon" type="image/x-icon" href="assets/favicon.png")
     link(rel="stylesheet" href="css/main.css")
 
   body
 
-    .app.container
+    .app.container(v-cloak)
       .columns
         .column
-          form.form
-            label.label.a11y-hidden(for="search") 콘텐츠 검색
-            .field
-              .control.has-icons-left
-                input.input(
-                  id="search"
-                  type="text"
-                  placeholder="검색어를 입력해주세요"
-                  @input="inputChangeSearch"
-                  :value="search"
-                )
-                span.icon.is-small.is-left
-                  i.fa.fa-search
+          ul
+            li a: {{a}}
+            li b: {{b}}
+            li c.cup: {{c.cup}}
+            li computed_a:  {{ computed_a }}
+            li d: {{d}}
 
-          hr
-
-
-
-
-
-    script(src="lib/jquery.min.js")
     script(src="lib/vue.js")
-    script(src="js/one-piece.js")
     script(src="js/main.js")
